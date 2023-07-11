@@ -9,7 +9,7 @@ use lambda_http::{http::{self}, service_fn, Body,IntoResponse, Request, Response
 
 #[tokio::main]
 async fn main() -> Result<(), lambda_http::Error> {
-    //cloudwatch
+    //cloudwatch logging configuration
     tracing_subscriber::fmt()
         .with_max_level(tracing::Level::INFO)
         .with_target(false)
@@ -20,7 +20,9 @@ async fn main() -> Result<(), lambda_http::Error> {
     Ok(())
 }
 
+// Handle incoming requests
 async fn handle(req: Request) -> Result<impl IntoResponse, lambda_http::Error>{
+    // Route the request to the appropriate controller
     let response = router(req).await.unwrap_or_else(|e |e.into());
 
     let res = Response::builder()

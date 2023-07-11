@@ -11,6 +11,7 @@ async fn get_client() -> Client {
     Client::new(&config)
 }
 
+// Create a new course in DynamoDB
 pub async fn create_course(req_body: &Body) -> Result<Value,Error>{
     let request_json = match req_body {
         Body::Text(json_string) => json_string,
@@ -48,6 +49,7 @@ pub async fn create_course(req_body: &Body) -> Result<Value,Error>{
 
 }
 
+// Get a course by ID from DynamoDB
 pub async fn get_course_by_id(id:String) -> Result<Value, Error>{
     let client = get_client().await;
     let query = client.get_item()
@@ -81,7 +83,7 @@ pub async fn get_course_by_id(id:String) -> Result<Value, Error>{
     }
 }
 
-
+// Get courses by category from DynamoDB
 pub async fn get_courses_by_category(category: String) -> Result<Value, Error>{
     let client = get_client().await;
 

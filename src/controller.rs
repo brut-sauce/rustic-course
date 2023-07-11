@@ -1,7 +1,7 @@
 use lambda_http::{http::Method, Body, Request, RequestExt};
 use crate::{error, model::{ResponseWrapper, PathParam,QueryParam}, dao, utils};
 
-
+// Route incoming requests to the appropriate handler function based on the HTTP method
 pub async fn router(req:Request) -> Result<ResponseWrapper, error::Error>{
     let path = req.raw_http_path().to_string();
 
@@ -14,6 +14,7 @@ pub async fn router(req:Request) -> Result<ResponseWrapper, error::Error>{
     Ok(response)
 }
 
+// Handle GET requests
 async fn get(path:String, query_params:String) -> Result<ResponseWrapper, error::Error>{
     let body = match utils::parse_path(path, query_params){
         //unsupported urls for get
@@ -33,6 +34,7 @@ async fn get(path:String, query_params:String) -> Result<ResponseWrapper, error:
     Ok(ResponseWrapper::new(200,body))
 }
 
+// Handle POST requests
 async fn post(path:String, req_body: &Body) -> Result<ResponseWrapper, error::Error>{
     let res = match utils::parse_path(path, "".to_string()){
         //unsupported urls for post
